@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js To-Do List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body class="bg-gray-800 min-h-screen flex items-center justify-center">
+  <div id="app" class="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center text-green-600 mb-4">My To-Do List</h1>
+    <div class="flex gap-2 mb-4">
+      <input 
+        v-model="newTask" 
+        type="text" 
+        placeholder="Add a new task"
+        class="flex-grow border border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-400 focus:outline-none"
+        @keyup.enter="addTask"
+      />
+      <button 
+        @click="addTask" 
+        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+      >
+        Add
+      </button>
+    </div>
+    <ul class="divide-y divide-gray-200">
+      <li 
+        v-for="(task, index) in tasks" 
+        :key="index"
+        class="flex justify-between items-center py-2"
+      >
+        <div v-if="!task.editing" class="flex justify-between items-center w-full">
+          <span class="text-gray-600">{{ task.text }}</span>
+          <div class="flex gap-2">
+            <button 
+              @click="startEditing(index)" 
+              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition"
+            >
+              ✏️
+            </button>
+            <button 
+              @click="removeTask(index)" 
+              class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition"
+            >
+              ❌
+            </button>
+          </div>
+        </div>
+        <div v-else class="flex gap-2 w-full">
+          <input 
+            v-model="task.text" 
+            type="text" 
+            class="flex-grow border border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          />
+          <button 
+            @click="saveEditing(index)" 
+            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition"
+          >
+            Save
+          </button>
+        </div>
+      </li>
+    </ul>
+    <p v-if="tasks.length === 0" class="text-center text-gray-500 mt-4">
+      No tasks yet. Add your first task! 🚀
+    </p>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
